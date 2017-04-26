@@ -7,7 +7,7 @@ import org.junit.Test;
 
 /**
  * The test class for the Converter class
- * @author Domenick
+ * @author Domenick DiBiase
  *
  */
 public class ConverterTest {
@@ -21,7 +21,9 @@ public class ConverterTest {
 	 */
 	@Test
 	public void testConvert() {
-		fail("Not yet implemented");
+		Converter test = Converter.getInstance();
+		assertEquals("D", test.convert("01101", 2, 16)); 
+		assertEquals("349", test.convert("15D", 16, 10));
 	}
 
 	/**
@@ -29,20 +31,25 @@ public class ConverterTest {
 	 */
 	@Test
 	public void testConvertToDec() {
-		assertEquals(3, Converter.convertToDec(367, 18));
+		Converter test = Converter.getInstance();
+		assertEquals(13, test.convertToDec("01101", 2)); 
+		assertEquals(349, test.convertToDec("15D", 16)); 
+		assertEquals(13, test.convertToDec("01101", 2)); 
+		assertEquals(13, test.convertToDec("01101", 2)); 
 	}
 
 	/**
-	 * Test the convert dec to base method
+	 * Test the convert decimal to intended base method
 	 */
 	@Test
 	public void testConvertDecToBase() {
-		assertEquals("10001", Converter.convertDecToBase(17, 2));
-		assertEquals("15D", Converter.convertDecToBase(349, 16));
+		Converter test = Converter.getInstance();
+		assertEquals("10001", test.convertDecToBase(17, 2));
+		assertEquals("15D", test.convertDecToBase(349, 16));
 		
 		//Try to convert base 10 to base 0
 		try{
-			Converter.convertDecToBase(349, 0);
+			test.convertDecToBase(349, 0);
 			fail();
 		} catch(IllegalArgumentException e){
 			assertEquals("Cannot compute the base of a number with the base of 0", e.getMessage());
@@ -50,7 +57,7 @@ public class ConverterTest {
 		
 		//Try to convert base 10 to base 36
 		try{
-			Converter.convertDecToBase(349, 36);
+			test.convertDecToBase(349, 36);
 			fail();
 		} catch(IllegalArgumentException e){
 			assertEquals("Cannot compute the base of a number with the base of 36", e.getMessage());
