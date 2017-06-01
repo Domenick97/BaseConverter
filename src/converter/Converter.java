@@ -39,7 +39,7 @@ public class Converter {
 	 *            The indented base of the number
 	 * @return String equivalent to the number passed through but of the
 	 *         intended base
-	 */
+	 */ 
 	public String convert(String num, int cBase, int iBase) {
 		if (cBase <= 0 || iBase <= 0)
 			throw new IllegalArgumentException();
