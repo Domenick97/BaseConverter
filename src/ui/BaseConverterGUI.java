@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+//import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,6 +40,8 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 	JPanel pnlInput2 = new JPanel();
 	/** Panel for the input fields */
 	JPanel pnlInput3 = new JPanel();
+	/** Panel for the run button */
+	JPanel pnlRun = new JPanel();
 	/** Panel for the output */
 	JPanel pnlOutput = new JPanel();
 	/** Label for the output */
@@ -47,6 +49,9 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 	/** Combo box for the different bases */
 	@SuppressWarnings("rawtypes")
 	JComboBox cboCurBase;
+	/** Combo box for the different bases */
+	@SuppressWarnings("rawtypes")
+	JComboBox cboIntBase;
 
 	public static void main(String[] args) {
 		new BaseConverterGUI();
@@ -66,12 +71,14 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 		
 		lblOut = new JLabel("Out");
 		JLabel lblNumber = new JLabel("Number to be converted");
-		JLabel lblBaseTen = new JLabel("Numbers Current Base: ");
-		JLabel lblCBase = new JLabel("Base: ");
+		JLabel lblCBase = new JLabel("Number's Current Base: ");
+		JLabel lblIBase = new JLabel("Number's Intended Base: ");
 		String[] allBases = { "2 Binary", "3", "4", "5", "6", "7", "8", "9", "10 Decimal", "11", "12", "13", "14", "15",
 				"16 HexaDecimal" };
 		cboCurBase = new JComboBox<String>(allBases);
+		cboIntBase = new JComboBox<String>(allBases);
 		cboCurBase.setSelectedIndex(8);
+		cboIntBase.setSelectedIndex(8);
 		tbNumber.setColumns(10);
 		//TODO: GridBag Layout for the panel
 //		c.fill = GridBagConstraints.BOTH;
@@ -99,15 +106,12 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 		
 		pnlInput.add(lblNumber);
 		pnlInput.add(tbNumber);
-		pnlInput2.add(lblBaseTen);
+		pnlInput2.add(lblCBase);
 		pnlInput2.add(cboCurBase);
-		pnlInput2.add(tbCBase);
-		tbCBase.setVisible(false);
-		pnlInput3.add(lblCBase);
-		lblCBase.setVisible(false);
-		pnlInput3.add(btnRun, BorderLayout.NORTH);
+		pnlInput3.add(lblIBase);
+		pnlInput3.add(cboIntBase);
+		pnlRun.add(btnRun, BorderLayout.NORTH);
 		btnRun.addActionListener(this);
-
 		pnlOutput.add(lblOut, BorderLayout.NORTH);
 
 		
@@ -122,7 +126,7 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = .0;
 		c.weighty = .0;
-		
+		c.anchor = GridBagConstraints.LINE_END;
 		c.gridx = 1;
 		c.gridy = 0;
 		cont.add(pnlInput2, c);
@@ -131,16 +135,24 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 		c.weightx = .0;
 		c.weighty = .0;
 		
-		c.gridx = 0;
+		c.gridx = 1;
 		c.gridy = 1;
 		cont.add(pnlInput3, c);
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = .0;
 		c.weighty = .0;
-		
+		c.gridwidth = 2;
 		c.gridx = 0;
 		c.gridy = 2;
+		cont.add(pnlRun, c);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = .0;
+		c.weighty = .0;
+		c.gridwidth = 2;
+		c.gridx = 0;
+		c.gridy = 3;
 		cont.add(pnlOutput, c);
 
 		setVisible(true);
@@ -151,7 +163,7 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 		System.out.println("Button clicked");
 
 		if (e.getSource() == btnRun) {
-			lblOut.setText(Converter.getInstance().convert(tbNumber.getText(), cboCurBase.getSelectedIndex() + 2, 10));
+			lblOut.setText(Converter.getInstance().convert(tbNumber.getText(), cboCurBase.getSelectedIndex() + 2, cboIntBase.getSelectedIndex() + 2));
 		}
 	}
 }
