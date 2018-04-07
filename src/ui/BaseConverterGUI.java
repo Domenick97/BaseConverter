@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-//import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -80,30 +79,8 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 		cboCurBase.setSelectedIndex(8);
 		cboIntBase.setSelectedIndex(8);
 		tbNumber.setColumns(10);
-		//TODO: GridBag Layout for the panel
-//		c.fill = GridBagConstraints.BOTH;
-//		c.weightx = .0;
-//		c.gridx = 0;
-//		c.gridy = 0;
-//		//c.anchor = GridBagConstraints.CENTER;
-//		pnlInput.add(lblNumber, c);
-//		
-//		c.fill = GridBagConstraints.HORIZONTAL;
-//		c.weightx = .0;
-//		c.weighty = .0;
-//		
-//		c.gridx = 1;
-//		c.gridy = 0;
-//		pnlInput.add(tbNumber, c);
-//		
-//		c.weightx = .25;
-//		c.weighty = .25;
-//		c.gridx = 0;
-//		c.gridy = 1;
-//		pnlInput.add(lblBaseTen, c);
-		
-		
-		
+		tbNumber.addActionListener(this);
+
 		pnlInput.add(lblNumber);
 		pnlInput.add(tbNumber);
 		pnlInput2.add(lblCBase);
@@ -113,6 +90,7 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 		pnlRun.add(btnRun, BorderLayout.NORTH);
 		btnRun.addActionListener(this);
 		pnlOutput.add(lblOut, BorderLayout.NORTH);
+		
 
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -160,10 +138,10 @@ public class BaseConverterGUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Button clicked");
 
-		if (e.getSource() == btnRun) {
+		if (e.getSource() == btnRun || e.getSource() == tbNumber) {
 			lblOut.setText(Converter.getInstance().convert(tbNumber.getText(), cboCurBase.getSelectedIndex() + 2, cboIntBase.getSelectedIndex() + 2));
 		}
+
 	}
 }

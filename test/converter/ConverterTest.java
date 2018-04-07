@@ -24,6 +24,8 @@ public class ConverterTest {
 		Converter test = Converter.getInstance();
 		assertEquals("D", test.convert("01101", 2, 16)); 
 		assertEquals("349", test.convert("15D", 16, 10));
+		assertEquals("", test.convert("", 12, 6));
+		assertEquals("", test.convert(null, 12, 6));
 	}
 
 	/**

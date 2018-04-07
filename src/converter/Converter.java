@@ -12,13 +12,6 @@ public class Converter {
 	/** Instance of the converter */
 	private static Converter singlton = new Converter();
 
-	// /**
-	// * Constructor of the converter class
-	// */
-	// private void Converter(){
-	// //Empty
-	// }
-
 	/**
 	 * Gets the instance of the
 	 * 
@@ -37,58 +30,68 @@ public class Converter {
 	 *            The current base of the number
 	 * @param iBase
 	 *            The indented base of the number
-	 * @return String equivalent to the number passed through but of the
-	 *         intended base
-	 */ 
-	public String convert(String num, int cBase, int iBase) {
-		if (cBase <= 0 || iBase <= 0)
-			throw new IllegalArgumentException();
-		String newNum;
-		if (cBase == 10)
-			newNum = convertDecToBase(Integer.parseInt(num), iBase);
-		else
-			newNum = convertDecToBase(convertToDec(num, cBase), iBase);
-
-		return newNum;
-
+	 * @return String equivalent to the number passed through but of the intended
+	 *         base
+	 */
+	public String convert(String number, int cBase, int iBase) {
+		if (number == null || number.equals(""))
+			return "";
+		
+		if (cBase == 10) {
+			try {
+				return convertDecToBase(Integer.parseInt(number), iBase);
+			} catch (NumberFormatException e) {
+				return number + " is not of base 10";
+			} catch (IllegalArgumentException e) {
+				return e.getMessage();
+			} 
+		} else {
+			try {
+				return convertDecToBase(convertToDec(number, cBase), iBase);
+			} catch (IllegalArgumentException e) {
+				return e.getMessage();
+			}
+		}
 	}
 
 	/**
 	 * Converts a number of any base to base 10
 	 * 
-	 * @param num
+	 * @param inputNumber
 	 *            The number being passed through
 	 * @param base
 	 *            The base of the number being passed through
 	 * @return Integer of base 10
 	 */
-	public int convertToDec(String num, int cBase) {
-		String oldNumS = num;
-		String mirOldNum = mirror(num.toLowerCase());
-		//System.out.println(mirOldNum);
+	public int convertToDec(String inputNumber, int cBase) throws IllegalArgumentException {
+		inputNumber = inputNumber.trim().toLowerCase();
+		int size = inputNumber.length();
+
 		int decNum = 0;
-		int num1 = 0;
-		for (int i = 0; i < oldNumS.length(); i++) {
-			if (Character.isLetter(mirOldNum.charAt(i))) {
-				//The character at the position in the string is a char
-				num1 = Character.getNumericValue(mirOldNum.charAt(i)); 
-			} else if(Character.isDigit(mirOldNum.charAt(i))){
-				//The character at the position in the string is a number
-				num1 = Integer.parseInt("" + mirOldNum.charAt(i));
+		int indexNum = 0;
+
+		for (int i = inputNumber.length() - 1; i >= 0; i--) {
+
+			if (Character.isLetter(inputNumber.charAt(i))) {
+				// The character at the position in the string is a char
+				indexNum = Character.getNumericValue(inputNumber.charAt(i));
+			} else if (Character.isDigit(inputNumber.charAt(i))) {
+				// The character at the position in the string is a number
+				indexNum = Integer.parseInt("" + inputNumber.charAt(i));
 			} else {
-				//If the character at the position is not a char or integer
+				// If the character at the position is not a char or integer
 				throw new IllegalArgumentException("Number can only contain letters and numbers.");
 			}
-			
+
 			// The number that was the remainder cannot be greater than the base
-			if (num1 > cBase)
-				throw new IllegalArgumentException();
+			if (indexNum > cBase)
+				throw new IllegalArgumentException("There was an issue converting");
 
-			//System.out.println(num1 * Math.pow(cBase, i));
-			decNum += num1 * Math.pow(cBase, i);
+			// System.out.println(num1 * Math.pow(cBase, i));
+			decNum += indexNum * Math.pow(cBase, size - i + 1);
 
-		}return decNum;
-
+		}
+		return decNum;
 	}
 
 	/**
@@ -98,10 +101,10 @@ public class Converter {
 	 *            The number being converted
 	 * @param base
 	 *            The intended base of the number
-	 * @return String equivalent to the number passed through but of the
-	 *         intended base
+	 * @return String equivalent to the number passed through but of the intended
+	 *         base
 	 */
-	public String convertDecToBase(int num, int iBase) {
+	public String convertDecToBase(int num, int iBase) throws IllegalArgumentException {
 		if (iBase > 35 || iBase < 2)
 			throw new IllegalArgumentException("Cannot compute the base of a number with the base of " + iBase);
 
@@ -118,9 +121,9 @@ public class Converter {
 				if (remainder > 26)
 					throw new IllegalArgumentException("The base cannot exceed 35");
 
-				newNum += (char) (remainder + 64);
+				newNum = (char) (remainder + 64) + newNum;
 			} else {
-				newNum += remainder;
+				newNum = remainder + newNum;
 			}
 		}
 		if (number > 9) {
@@ -128,17 +131,17 @@ public class Converter {
 			if (number > 26)
 				throw new IllegalArgumentException("The base cannot exceed 35");
 
-			newNum += (char) (number + 64);
+			newNum = (char) (number + 64) + newNum;
 		} else {
-			newNum += number;
+			newNum = number + newNum;
 		}
 
-		return mirror(newNum);
+		return newNum;
 	}
 
 	/**
-	 * Flips the order of the characters in the string. The front becomes the
-	 * back and the back becomes the front.
+	 * Flips the order of the characters in the string. The front becomes the back
+	 * and the back becomes the front.
 	 * 
 	 * @param flip
 	 *            The string to be mirrored
